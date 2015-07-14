@@ -6,8 +6,10 @@ module Dhash extend self
     (a^b).to_s(2).count('1')
   end
 
-  def calculate(file, hash_size = 8)
-    image = Magick::Image.read(file).first
+  def calculate(image, hash_size = 8)
+    unless image.is_a? Magick::Image
+      image = Magick::Image.read(file).first
+    end
     image = image.quantize(256, Magick::Rec601LumaColorspace, Magick::NoDitherMethod, 8)
     image = image.resize!(hash_size + 1, hash_size)
 
